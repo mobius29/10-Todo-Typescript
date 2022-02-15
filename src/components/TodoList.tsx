@@ -1,19 +1,20 @@
 import TodoListItem from './TodoListItem'
-import styled from 'styled-components'
 import React from 'react'
+import { todo } from '../App'
+import { List } from './styles/TodoList'
 
-const List = styled.div`
-  min-height: 320px;
-  max-height: 513px;
-  overflow-y: auto;
-`
+interface Props {
+  todos: todo[]
+  onRemove: (id: number) => void
+  onToggle: (id: number) => void
+}
 
-const TodoList: React.FC = () => {
+const TodoList: React.FC<Props> = ({ todos, onRemove, onToggle }) => {
   return (
     <List>
-      <TodoListItem />
-      <TodoListItem />
-      <TodoListItem />
+      {todos.map((todo) => (
+        <TodoListItem todo={todo} onRemove={onRemove} onToggle={onToggle} />
+      ))}
     </List>
   )
 }

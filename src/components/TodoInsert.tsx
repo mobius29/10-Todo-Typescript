@@ -1,41 +1,35 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { MdAdd } from 'react-icons/md'
-import styled from 'styled-components'
+import { Form, Input, Button } from './styles/TodoInsert'
 
-const Form = styled.form`
-  display: flex;
-  background: #495057;
-`
+interface Props {
+  onInsert: (text: string) => void
+}
 
-const Input = styled.input`
-  padding: 0.5rem;
-  font-size: 1.125rem;
-  line-height: 1.5;
-  color: white;
-  flex: 1;
-  &::placeholder {
-    color: #dee2e6;
-  }
-`
+const TodoInsert: React.FC<Props> = ({ onInsert }) => {
+  const [value, setValue] = useState('')
 
-const Button = styled.button`
-  background: #868e96;
-  color: white;
-  padding: 0 1rem 0 1rem;
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: 0.1s background ease-in;
-  &:hover {
-    background: #adb5bd;
-  }
-`
+  const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value)
+  }, [])
 
-const TodoInsert: React.FC = () => {
+  const onSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      onInsert(value)
+      setValue('')
+
+      e.preventDefault()
+    },
+    [onInsert, value]
+  )
+
   return (
-    <Form>
-      <Input placeholder="할 일을 입력하세요" />
+    <Form onSubmit={onSubmit}>
+      <Input
+        placeholder="할 일을 입력하세요"
+        value={value}
+        onChange={onChange}
+      />
       <Button type="submit">
         <MdAdd />
       </Button>
