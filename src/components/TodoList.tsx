@@ -1,7 +1,7 @@
 import TodoListItem from './TodoListItem'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { todo } from '../App'
-import { List } from './styles/TodoList'
+import { List } from 'react-virtualized'
 
 interface Props {
   todos: todo[]
@@ -10,13 +10,32 @@ interface Props {
 }
 
 const TodoList: React.FC<Props> = ({ todos, onRemove, onToggle }) => {
+  const rowRenderer = useCallback(
+    ({ index, style }) => {
+      const todo = todos[index]
+      return (
+        <TodoListItem
+          todo={todo}
+          style={style}
+          onRemove={onRemove}
+          onToggle={onToggle}
+        />
+      )
+    },
+    [todos, onRemove, onToggle]
+  )
+
   return (
-    <List>
-      {todos.map((todo) => (
-        <TodoListItem todo={todo} onRemove={onRemove} onToggle={onToggle} />
-      ))}
-    </List>
+    <List
+      width={512}
+      height={513}
+      rowCount={todos.length}
+      rowHeight={57}
+      rowRenderer={rowRenderer}
+      list={todos}
+      style={{ outline: 'none' }}
+    />
   )
 }
 
-export default TodoList
+export default React.memo(TodoList)

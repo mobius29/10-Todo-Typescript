@@ -4,17 +4,20 @@ interface checked {
   checked: boolean
 }
 
+export const Virtualized = styled.div`
+  & + & {
+    border-top: 1px solid #dee2e6;
+  }
+
+  &:nth-child(even) {
+    background: #f8f9fa;
+  }
+`
+
 export const Item = styled.div`
   padding: 1rem;
   display: flex;
   align-items: center;
-  &:nth-child(even) {
-    background: #f8f9fa;
-  }
-
-  & + & {
-    border-top: 1px solid #dee2e6;
-  }
 `
 
 export const Checkbox = styled.div<checked>`
